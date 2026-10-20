@@ -78,7 +78,8 @@ The installer isn't code-signed yet, so Windows SmartScreen will probably warn y
 ## Shortcuts
 
 - `Ctrl+K` command bar, `Alt+Home` start screen
-- `Ctrl+N` new document, `Ctrl+T` new tab, `Ctrl+W` close tab, `Ctrl+Tab` / `Ctrl+1`…`9` switch tabs
+- `Ctrl+N` new document, `Ctrl+T` new tab, `Ctrl+W` close tab, `Ctrl+Shift+W` close all tabs
+- `Ctrl+Tab` / `Ctrl+1`…`9` switch tabs, right-click a tab for more
 - `Ctrl+O` open, `Ctrl+S` save, `Ctrl+Shift+S` save as, `Ctrl+P` print or PDF
 - `Ctrl+F` find, `Ctrl+H` replace
 - `Ctrl+Alt+1`…`3` headings, `Ctrl+Shift+N` body text, `Ctrl+Shift+L` bullet list

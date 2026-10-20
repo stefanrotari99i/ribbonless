@@ -83,7 +83,8 @@ function when(ts) {
 }
 
 function countWords() {
-  const text = [...pane.querySelectorAll(".docx article")].map((a) => a.innerText).join(" ");
+  // textContent, not innerText: off-screen paragraphs skip layout and innerText would miss them
+  const text = [...pane.querySelectorAll(".docx article p")].map((p) => p.textContent).join(" ");
   words = (text.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu) ?? []).length;
 }
 
@@ -577,24 +578,44 @@ async function openDocument(name, data, path = null) {
   return load(name, data, path, { force: true });
 }
 
-async function closeTab(tab = active) {
+async function closeTab(tab = active, { discard = false } = {}) {
   if (tab !== active) switchTab(tab);
   if (doc) {
     if (previewing) await exitPreview();
     if (autoSaving() && dirty) await save();
-    if (dirty && !(await confirmUser(`Close “${doc.name}” without saving changes?`))) return false;
-    if (dirty) clearBackup();
+    if (dirty && !discard && !(await confirmUser(`Close “${doc.name}” without saving changes?`))) return false;
     rememberPlace();
   }
   const i = tabs.indexOf(tab);
   tabs.splice(i, 1);
   tab.pane.remove();
   active = null;
+  if (!tabs.some(tabDirty)) clearBackup();
   if (!tabs.length) {
     switchTab(newTab());
     showStart();
   } else switchTab(tabs[Math.min(i, tabs.length - 1)]);
   saveSession();
+  return true;
+}
+
+// Saves what auto-save can, then asks once about everything still unsaved
+async function closeTabs(list) {
+  for (const t of list) {
+    if (!tabDirty(t)) continue;
+    switchTab(t);
+    if (previewing) await exitPreview();
+    if (autoSaving() && dirty) await save();
+  }
+  const names = list.filter(tabDirty).map((t) => `• ${(t === active ? doc : t.doc).name}`);
+  if (names.length) {
+    const question =
+      names.length === 1
+        ? `${names[0].slice(2)} has unsaved changes. Close it anyway?`
+        : `${names.length} documents have unsaved changes:\n\n${names.join("\n")}\n\nClose them anyway?`;
+    if (!(await confirmUser(question))) return false;
+  }
+  for (const t of list) await closeTab(t, { discard: true });
   return true;
 }
 
@@ -624,6 +645,11 @@ function renderTabs() {
       b.onclick = (e) => {
         if (!e.target.closest(".tab-close")) switchTab(t);
       };
+      b.oncontextmenu = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openTabMenu(t, e);
+      };
       const label = Object.assign(document.createElement("span"), {
         className: "tab-name",
         textContent: d ? d.name.replace(/\.docx$/i, "") : "Start",
@@ -640,6 +666,34 @@ function renderTabs() {
     }),
   );
 }
+
+// Right-click on a tab
+let menuTab = null;
+function openTabMenu(tab, e) {
+  closeMenus();
+  menuTab = tab;
+  const menu = $("tab-menu");
+  const i = tabs.indexOf(tab);
+  menu.querySelector('[data-tabs="others"]').disabled = tabs.length < 2;
+  menu.querySelector('[data-tabs="right"]').disabled = i === tabs.length - 1;
+  menu.hidden = false;
+  menu.style.left = `${Math.min(e.clientX, window.innerWidth - menu.offsetWidth - 6)}px`;
+  menu.style.top = `${Math.min(e.clientY, window.innerHeight - menu.offsetHeight - 6)}px`;
+}
+$("tab-menu").onmousedown = (e) => e.preventDefault();
+$("tab-menu").onclick = (e) => {
+  const b = e.target.closest("[data-tabs]");
+  if (!b || b.disabled || !tabs.includes(menuTab)) return;
+  closeMenus();
+  const i = tabs.indexOf(menuTab);
+  const pick = {
+    close: () => [menuTab],
+    others: () => tabs.filter((t) => t !== menuTab),
+    right: () => tabs.slice(i + 1),
+    all: () => [...tabs],
+  }[b.dataset.tabs]();
+  closeTabs(pick);
+};
 
 // Open files are remembered so the next launch can bring them back
 function saveSession() {
@@ -1223,6 +1277,8 @@ const commands = {
     updateUi();
   },
   closeTab: () => closeTab(),
+  closeAllTabs: () => closeTabs([...tabs]),
+  closeOtherTabs: () => closeTabs(tabs.filter((t) => t !== active)),
   nextTab: () => cycleTab(1),
   prevTab: () => cycleTab(-1),
   link: () => openLink(),
@@ -1293,6 +1349,8 @@ function paletteItems() {
     { group: "File", title: "Home", keywords: "start screen back recent templates", hint: "Alt+Home", run: commands.home, on: !!doc },
     { group: "File", title: "New tab", hint: "Ctrl+T", run: commands.newTab, on: true },
     { group: "File", title: "Close tab", hint: "Ctrl+W", run: commands.closeTab, on: true },
+    { group: "File", title: "Close other tabs", run: commands.closeOtherTabs, on: tabs.length > 1 },
+    { group: "File", title: "Close all tabs", hint: "Ctrl+Shift+W", run: commands.closeAllTabs, on: tabs.length > 1 || !!doc },
     { group: "Insert", title: "Add link…", keywords: "hyperlink url web", hint: "Ctrl+Shift+K", run: commands.link, on: ed },
     { group: "Format", title: "Line spacing 1.0", keywords: "single", run: () => editor.setParagraphSpacing({ line: 1 }), on: ed },
     { group: "Format", title: "Line spacing 1.15", run: () => editor.setParagraphSpacing({ line: 1.15 }), on: ed },
@@ -1389,7 +1447,7 @@ const caret = createCaret(() => setting("smoothCaret") && !!editor);
 const imageTools = createImageTools({ view, getEditor: () => editor });
 
 function closeMenus() {
-  $("menu").hidden = $("ctx").hidden = true;
+  $("menu").hidden = $("ctx").hidden = $("tab-menu").hidden = true;
   $("more").setAttribute("aria-expanded", false);
 }
 $("more").onclick = (e) => {
@@ -1710,7 +1768,7 @@ document.addEventListener("keydown", (e) => {
     s: () => save(e.shiftKey),
     f: e.shiftKey ? commands.focus : commands.find,
     h: commands.replace,
-    w: commands.closeTab,
+    w: e.shiftKey ? commands.closeAllTabs : commands.closeTab,
     t: commands.newTab,
     tab: e.shiftKey ? commands.prevTab : commands.nextTab,
     k: e.shiftKey && commands.link,

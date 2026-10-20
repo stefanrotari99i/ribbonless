@@ -237,6 +237,35 @@ test("Home shows the start screen without closing the document", async ({ page }
   await expect(page.locator(".tab")).toHaveCount(1); // the start screen's tab goes away once left
 });
 
+test("closing all tabs asks once about unsaved documents", async ({ page }) => {
+  await newDocument(page, "Report");
+  await page.keyboard.type("edited ");
+  await page.keyboard.press("Control+T");
+  await newDocument(page, "Meeting Notes");
+  await page.keyboard.type("edited ");
+
+  const questions = [];
+  page.on("dialog", (d) => {
+    questions.push(d.message());
+    questions.length === 1 ? d.dismiss() : d.accept();
+  });
+  await page.locator(".tab", { hasText: "Report" }).click({ button: "right" });
+  await page.locator('#tab-menu [data-tabs="all"]').click();
+  await expect.poll(() => questions.length).toBe(1);
+  expect(questions[0]).toContain("2 documents have unsaved changes");
+  await expect(page.locator(".tab")).toHaveCount(2); // cancelled: nothing closed
+
+  await page.keyboard.press("Control+Shift+W");
+  await expect(page.locator(".open-btn")).toBeVisible();
+  expect(questions).toHaveLength(2);
+  await expect(page.locator("#tabbar")).toBeHidden();
+});
+
+test("the word count includes the whole document", async ({ page }) => {
+  await newDocument(page, "Letter");
+  await expect(page.locator("#words")).toContainText(/^[1-9]\d* words/);
+});
+
 test("tabs keep documents apart", async ({ page }) => {
   await newDocument(page, "Report");
   await page.keyboard.press("Control+T");
