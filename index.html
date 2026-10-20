@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ribbonless</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/boot.js"></script>
+  </head>
+  <body>
+    <header class="toolbar" data-tauri-drag-region>
+      <button id="home-btn" class="icon" title="Home (Alt+Home)" aria-label="Home">
+        <svg viewBox="0 0 20 20">
+          <path d="M3.5 9.2 10 3.75l6.5 5.45" />
+          <path d="M5.25 8v7.25a1 1 0 0 0 1 1h2.5v-4.5h2.5v4.5h2.5a1 1 0 0 0 1-1V8" />
+        </svg>
+      </button>
+      <button id="outline-btn" class="icon" title="Outline (Ctrl+Shift+O)" aria-label="Outline" data-needs-doc>
+        <svg viewBox="0 0 20 20">
+          <rect x="2.75" y="4" width="14.5" height="12" rx="2.5" />
+          <path d="M7.75 4v12" />
+          <path d="M4.6 7.2h1.4M4.6 9.6h1.4" />
+        </svg>
+      </button>
+
+      <div class="title" data-tauri-drag-region>
+        <div id="name" data-tauri-drag-region>Ribbonless</div>
+        <div id="status">
+          <span id="state" data-tauri-drag-region></span><button id="words" class="words" title="Set a writing goal"></button>
+        </div>
+      </div>
+
+      <div class="tools">
+        <button id="aa" class="icon aa" title="Format" aria-label="Format" aria-haspopup="dialog" aria-expanded="false" data-needs-edit>
+          <span>A</span><span>a</span>
+        </button>
+        <button id="search" class="icon" title="Find (Ctrl+F)" aria-label="Find" data-needs-doc>
+          <svg viewBox="0 0 20 20">
+            <circle cx="8.75" cy="8.75" r="5.25" />
+            <path d="M12.6 12.6l4.15 4.15" />
+          </svg>
+        </button>
+        <div class="menu-wrap">
+          <button id="more" class="icon" title="More" aria-label="More" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 20 20">
+              <circle cx="10" cy="10" r="7.25" />
+              <path d="M6.6 10h.01M10 10h.01M13.4 10h.01" class="dots" />
+            </svg>
+          </button>
+          <div id="menu" class="menu" role="menu" hidden>
+            <button data-cmd="palette" role="menuitem">Command Bar…<kbd>Ctrl+K</kbd></button>
+            <hr />
+            <button data-cmd="new" role="menuitem">New Document<kbd>Ctrl+N</kbd></button>
+            <button data-cmd="newTab" role="menuitem">New Tab<kbd>Ctrl+T</kbd></button>
+            <button data-cmd="closeTab" role="menuitem">Close Tab<kbd>Ctrl+W</kbd></button>
+            <button data-cmd="home" role="menuitem" data-needs-doc>Home</button>
+            <button data-cmd="open" role="menuitem">Open…<kbd>Ctrl+O</kbd></button>
+            <button data-cmd="save" role="menuitem" data-needs-doc>Save<kbd>Ctrl+S</kbd></button>
+            <button data-cmd="saveAs" role="menuitem" data-needs-doc>Save As…<kbd>Ctrl+Shift+S</kbd></button>
+            <button data-cmd="history" role="menuitem" data-needs-path>Version History…</button>
+            <button data-cmd="revert" role="menuitem" data-needs-path>Revert to Last Opened</button>
+            <hr />
+            <button data-cmd="print" role="menuitem" data-needs-doc>Export as PDF…<kbd>Ctrl+P</kbd></button>
+            <button data-cmd="exportMd" role="menuitem" data-needs-doc>Export as Markdown…</button>
+            <button data-cmd="exportHtml" role="menuitem" data-needs-doc>Export as HTML…</button>
+            <hr />
+            <button data-cmd="link" role="menuitem" data-needs-edit>Add Link…<kbd>Ctrl+Shift+K</kbd></button>
+            <button data-cmd="image" role="menuitem" data-needs-edit>Insert Image…</button>
+            <button data-cmd="table" role="menuitem" data-needs-edit>Insert Table</button>
+            <hr />
+            <button data-cmd="outline" role="menuitemcheckbox" aria-checked="false" data-needs-doc>Outline<kbd>Ctrl+Shift+O</kbd></button>
+            <button data-cmd="focus" role="menuitemcheckbox" aria-checked="false" data-needs-doc>Focus Mode<kbd>Ctrl+Shift+F</kbd></button>
+            <button data-cmd="read" role="menuitemcheckbox" aria-checked="false" data-needs-doc>Read Aloud</button>
+            <button data-cmd="goal" role="menuitem" data-needs-doc>Writing Goal…</button>
+            <hr />
+            <button data-cmd="autosave" role="menuitemcheckbox" aria-checked="true">Auto-Save</button>
+            <button data-cmd="changes" role="menuitemcheckbox" aria-checked="true">Show Changes</button>
+            <button data-cmd="smoothCaret" role="menuitemcheckbox" aria-checked="true">Smooth Cursor</button>
+            <button data-cmd="reopen" role="menuitemcheckbox" aria-checked="true">Reopen Last Document</button>
+            <button data-cmd="theme" role="menuitemcheckbox" aria-checked="false">Dark Appearance</button>
+          </div>
+        </div>
+        <button id="save" class="primary" title="Save (Ctrl+S)" hidden>Save</button>
+      </div>
+      <div class="lights">
+        <button id="win-min" class="light min" title="Minimize" aria-label="Minimize">
+          <svg viewBox="0 0 12 12"><path d="M3 6h6" /></svg>
+        </button>
+        <button id="win-max" class="light max" title="Maximize" aria-label="Maximize">
+          <svg viewBox="0 0 12 12"><path d="M4 8V4.5L7.5 8zM8 4v3.5L4.5 4z" class="fill" /></svg>
+        </button>
+        <button id="win-close" class="light close" title="Close" aria-label="Close">
+          <svg viewBox="0 0 12 12"><path d="M3.5 3.5l5 5M8.5 3.5l-5 5" /></svg>
+        </button>
+      </div>
+      <input id="file" type="file" accept=".docx" hidden />
+      <input id="image-file" type="file" accept="image/*" hidden />
+    </header>
+
+    <div id="tabbar" class="tabbar" hidden>
+      <div class="tabs"></div>
+      <button class="tab-new" data-cmd-tab="new" title="New tab (Ctrl+T)" aria-label="New tab">
+        <svg viewBox="0 0 20 20"><path d="M10 5v10M5 10h10" /></svg>
+      </button>
+    </div>
+
+    <div id="findbar" class="findbar" hidden>
+      <div class="find-row">
+        <button id="find-toggle" class="disclose" title="Show Replace (Ctrl+H)" aria-label="Show replace" aria-expanded="false">
+          <svg viewBox="0 0 20 20"><path d="M7.5 5l5 5-5 5" /></svg>
+        </button>
+        <label class="search">
+          <svg viewBox="0 0 20 20">
+            <circle cx="8.5" cy="8.5" r="5" />
+            <path d="M12.3 12.3l4 4" />
+          </svg>
+          <input id="find-input" type="search" placeholder="Find" spellcheck="false" />
+          <button id="find-case" class="case" title="Match case" aria-label="Match case" aria-pressed="false">Aa</button>
+        </label>
+        <span id="find-count"></span>
+        <div class="group">
+          <button id="find-prev" class="seg" title="Previous (Shift+Enter)" aria-label="Previous match">
+            <svg viewBox="0 0 20 20"><path d="M12.5 5l-5 5 5 5" /></svg>
+          </button>
+          <button id="find-next" class="seg" title="Next (Enter)" aria-label="Next match">
+            <svg viewBox="0 0 20 20"><path d="M7.5 5l5 5-5 5" /></svg>
+          </button>
+        </div>
+        <button id="find-done" class="plain">Done</button>
+      </div>
+      <div class="find-row replace-row">
+        <span class="disclose-space"></span>
+        <label class="search">
+          <svg viewBox="0 0 20 20"><path d="M4 7h9.5a3 3 0 0 1 0 6H11M6.5 4.5 4 7l2.5 2.5" /></svg>
+          <input id="replace-input" type="text" placeholder="Replace with" spellcheck="false" />
+        </label>
+        <button id="replace-one" class="secondary" title="Replace (Enter)">Replace</button>
+        <button id="replace-all" class="secondary" title="Replace all (Ctrl+Enter)">All</button>
+      </div>
+    </div>
+    <aside id="outline" class="outline" aria-label="Outline">
+      <h2>Outline</h2>
+      <nav id="outline-list"></nav>
+      <p id="outline-empty">Headings you add with <b>Aa</b> show up here.</p>
+    </aside>
+
+    <div id="version-bar" class="version-bar" hidden>
+      <span>Viewing the version from <b id="version-bar-when"></b></span>
+      <button id="version-done" class="secondary">Done</button>
+      <button id="version-restore" class="primary">Restore This Version</button>
+    </div>
+
+    <main id="view"></main>
+
+    <aside id="history" class="history" aria-label="Version history" hidden>
+      <header>
+        <h2>Version History</h2>
+        <button id="history-close" class="icon" title="Close" aria-label="Close">
+          <svg viewBox="0 0 20 20"><path d="M6 6l8 8M14 6l-8 8" /></svg>
+        </button>
+      </header>
+      <div id="history-list"></div>
+      <p id="history-empty">Versions appear here as you work. One is kept every couple of minutes while auto-save is on.</p>
+    </aside>
+
+    <!-- Command bar (Ctrl+K) -->
+    <div id="palette" class="palette-scrim" hidden>
+      <div class="palette" role="dialog" aria-label="Command bar">
+        <label class="palette-search">
+          <svg viewBox="0 0 20 20">
+            <circle cx="8.75" cy="8.75" r="5.25" />
+            <path d="M12.6 12.6l4.15 4.15" />
+          </svg>
+          <input id="palette-input" placeholder="Type a command or a heading…" spellcheck="false" autocomplete="off" />
+        </label>
+        <div id="palette-list" class="pl-list" role="listbox"></div>
+      </div>
+    </div>
+
+    <!-- Slash menu -->
+    <div id="slash" class="slash" hidden>
+      <div id="slash-list" class="pl-list" role="listbox"></div>
+    </div>
+
+    <!-- Writing goal -->
+    <div id="goal-pop" class="goal-pop" hidden>
+      <label
+        >Words to write this session
+        <input id="goal-input" type="number" min="0" step="50" placeholder="500" />
+      </label>
+      <p id="goal-progress"></p>
+      <div class="goal-actions">
+        <button id="goal-clear" class="secondary">No Goal</button>
+        <button id="goal-set" class="primary">Set Goal</button>
+      </div>
+    </div>
+
+    <!-- Read aloud -->
+    <div id="reader" class="reader" hidden>
+      <span class="wave"><i></i><i></i><i></i></span>
+      Reading aloud
+      <button id="reader-stop" title="Stop (Esc)">Stop</button>
+    </div>
+
+    <!-- Format panel (Aa) -->
+    <div id="format-pop" class="popover" role="dialog" aria-label="Format" hidden>
+      <div class="pop-styles">
+        <button data-key="title" class="st st-title">Title</button>
+        <button data-key="heading 1" class="st st-h1">Heading</button>
+        <button data-key="heading 2" class="st st-h2">Subheading</button>
+        <button data-key="heading 3" class="st st-h3">Section</button>
+        <button data-key="normal" class="st st-body">Body</button>
+      </div>
+      <div class="pop-row">
+        <div class="group wide">
+          <button data-fmt="bold" class="seg" title="Bold (Ctrl+B)"><b>B</b></button>
+          <button data-fmt="italic" class="seg" title="Italic (Ctrl+I)"><i>I</i></button>
+          <button data-fmt="underline" class="seg" title="Underline (Ctrl+U)"><u>U</u></button>
+        </div>
+        <div class="group stepper" title="Font size (Ctrl+[ / Ctrl+])">
+          <button data-step="-1" class="seg" aria-label="Smaller">
+            <svg viewBox="0 0 20 20"><path d="M6 10h8" /></svg>
+          </button>
+          <span class="size-value">—</span>
+          <button data-step="1" class="seg" aria-label="Bigger">
+            <svg viewBox="0 0 20 20"><path d="M6 10h8M10 6v8" /></svg>
+          </button>
+        </div>
+      </div>
+      <label class="popup font-pick" title="Font">
+        <select id="font-select" aria-label="Font">
+          <option value="">Default font</option>
+        </select>
+        <svg viewBox="0 0 10 16"><path d="M2 6l3-3 3 3M2 10l3 3 3-3" /></svg>
+      </label>
+      <div class="pop-row spacing-row">
+        <span class="pc-label">Lines</span>
+        <div class="group wide">
+          <button data-line="1" class="seg num" title="Single">1.0</button>
+          <button data-line="1.15" class="seg num">1.15</button>
+          <button data-line="1.5" class="seg num">1.5</button>
+          <button data-line="2" class="seg num" title="Double">2.0</button>
+        </div>
+      </div>
+      <div class="pop-row spacing-row">
+        <span class="pc-label">After</span>
+        <div class="group wide">
+          <button data-after="0" class="seg num" title="No space after paragraph">0</button>
+          <button data-after="6" class="seg num">6 pt</button>
+          <button data-after="12" class="seg num">12 pt</button>
+        </div>
+      </div>
+      <div class="pop-colors">
+        <span class="pc-label">Text</span>
+        <button data-color="" class="dot auto" title="Automatic" aria-label="Automatic color"></button>
+        <button data-color="#1D1D1F" class="dot" style="--c: #1d1d1f" title="Black" aria-label="Black"></button>
+        <button data-color="#FF3B30" class="dot" style="--c: #ff3b30" title="Red" aria-label="Red"></button>
+        <button data-color="#FF9500" class="dot" style="--c: #ff9500" title="Orange" aria-label="Orange"></button>
+        <button data-color="#34C759" class="dot" style="--c: #34c759" title="Green" aria-label="Green"></button>
+        <button data-color="#007AFF" class="dot" style="--c: #007aff" title="Blue" aria-label="Blue"></button>
+        <button data-color="#AF52DE" class="dot" style="--c: #af52de" title="Purple" aria-label="Purple"></button>
+        <label class="dot custom" title="Custom color"><input type="color" id="color-custom" aria-label="Custom color" /></label>
+      </div>
+      <div class="pop-colors">
+        <span class="pc-label">Highlight</span>
+        <button data-hl="" class="dot none" title="No highlight" aria-label="No highlight"></button>
+        <button data-hl="#FFFF00" class="dot hl" style="--c: #ffff00" title="Yellow" aria-label="Yellow highlight"></button>
+        <button data-hl="#00FF00" class="dot hl" style="--c: #00ff00" title="Green" aria-label="Green highlight"></button>
+        <button data-hl="#00FFFF" class="dot hl" style="--c: #00ffff" title="Cyan" aria-label="Cyan highlight"></button>
+        <button data-hl="#FF00FF" class="dot hl" style="--c: #ff00ff" title="Pink" aria-label="Pink highlight"></button>
+      </div>
+      <div class="pop-row">
+        <div class="group wide">
+          <button data-align="left" class="seg" title="Align left (Ctrl+L)" aria-label="Align left">
+            <svg viewBox="0 0 20 20"><path d="M4 5h12M4 8.5h8M4 12h12M4 15.5h8" /></svg>
+          </button>
+          <button data-align="center" class="seg" title="Center (Ctrl+E)" aria-label="Center">
+            <svg viewBox="0 0 20 20"><path d="M4 5h12M6 8.5h8M4 12h12M6 15.5h8" /></svg>
+          </button>
+          <button data-align="right" class="seg" title="Align right (Ctrl+R)" aria-label="Align right">
+            <svg viewBox="0 0 20 20"><path d="M4 5h12M8 8.5h8M4 12h12M8 15.5h8" /></svg>
+          </button>
+          <button data-align="justify" class="seg" title="Justify (Ctrl+J)" aria-label="Justify">
+            <svg viewBox="0 0 20 20"><path d="M4 5h12M4 8.5h12M4 12h12M4 15.5h12" /></svg>
+          </button>
+        </div>
+        <div class="group">
+          <button data-list="list bullet" class="seg" title="Bulleted list (Ctrl+Shift+L)" aria-label="Bulleted list">
+            <svg viewBox="0 0 20 20">
+              <path d="M8 5.5h8M8 10h8M8 14.5h8" />
+              <circle cx="4.5" cy="5.5" r=".9" class="dot" />
+              <circle cx="4.5" cy="10" r=".9" class="dot" />
+              <circle cx="4.5" cy="14.5" r=".9" class="dot" />
+            </svg>
+          </button>
+          <button data-list="list number" class="seg" title="Numbered list" aria-label="Numbered list">
+            <svg viewBox="0 0 20 20">
+              <path
+                d="M8.5 5.5h7.5M8.5 10h7.5M8.5 14.5h7.5M4 4.2l1-.7v4M3.4 9.3a1 1 0 0 1 1.9.3c0 .9-1.9 1.6-1.9 2.6h2M3.5 13.4h1.6l-.9 1.1a.9.9 0 1 1-.8 1.4"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating bar over a text selection -->
+    <div id="selbar" class="selbar" hidden>
+      <button data-fmt="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+      <button data-fmt="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+      <button data-fmt="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+      <button data-link title="Link (Ctrl+Shift+K)" aria-label="Link">
+        <svg viewBox="0 0 20 20">
+          <path d="M8.5 11.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2l-.9.9M11.5 8.5a3 3 0 0 0-4.2 0l-2.6 2.6a3 3 0 0 0 4.2 4.2l.9-.9" />
+        </svg>
+      </button>
+      <button data-hl="#FFFF00" title="Highlight" aria-label="Highlight">
+        <svg viewBox="0 0 20 20">
+          <path d="M11.8 4.2l4 4-6.6 6.6H5.2v-4z" />
+          <path d="M4 17.5h12" class="hl-line" />
+        </svg>
+      </button>
+      <span class="bar-sep"></span>
+      <button data-key="heading 1" title="Heading (Ctrl+Alt+1)" class="txt">H1</button>
+      <button data-key="heading 2" title="Subheading (Ctrl+Alt+2)" class="txt">H2</button>
+      <button data-list="list bullet" title="Bulleted list" aria-label="Bulleted list">
+        <svg viewBox="0 0 20 20">
+          <path d="M8 5.5h8M8 10h8M8 14.5h8" />
+          <circle cx="4.5" cy="5.5" r=".9" class="dot" />
+          <circle cx="4.5" cy="10" r=".9" class="dot" />
+          <circle cx="4.5" cy="14.5" r=".9" class="dot" />
+        </svg>
+      </button>
+    </div>
+
+    <div id="hud" class="hud" hidden></div>
+
+    <!-- Link editor and hover tip -->
+    <div id="link-pop" class="link-pop" hidden>
+      <label class="search">
+        <svg viewBox="0 0 20 20">
+          <path d="M8.5 11.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2l-.9.9M11.5 8.5a3 3 0 0 0-4.2 0l-2.6 2.6a3 3 0 0 0 4.2 4.2l.9-.9" />
+        </svg>
+        <input id="link-input" type="text" placeholder="Paste or type a link" spellcheck="false" autocomplete="off" />
+      </label>
+      <button id="link-remove" class="secondary" title="Remove link">Remove</button>
+      <button id="link-apply" class="primary">Done</button>
+    </div>
+    <div id="link-tip" class="link-tip" hidden><span></span><kbd></kbd></div>
+
+    <!-- Selected image: resize handles and a small bar -->
+    <div id="img-frame" class="img-frame" hidden>
+      <i data-corner="tl"></i><i data-corner="tr"></i><i data-corner="bl"></i><i data-corner="br"></i>
+    </div>
+    <div id="img-bar" class="selbar img-bar" hidden>
+      <button data-img-align="left" title="Align left" aria-label="Align left">
+        <svg viewBox="0 0 20 20"><path d="M4 4.5v11M7.5 7h8v6h-8z" /></svg>
+      </button>
+      <button data-img-align="center" title="Center" aria-label="Center">
+        <svg viewBox="0 0 20 20"><path d="M10 3.5v2M10 14.5v2M5.5 7h9v6h-9z" /></svg>
+      </button>
+      <button data-img-align="right" title="Align right" aria-label="Align right">
+        <svg viewBox="0 0 20 20"><path d="M16 4.5v11M4.5 7h8v6h-8z" /></svg>
+      </button>
+      <span class="bar-sep"></span>
+      <button data-img="delete" title="Delete image (Delete)" aria-label="Delete image">
+        <svg viewBox="0 0 20 20">
+          <path d="M5 6.5h10M8.5 6.5V5a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.5M6.5 6.5l.6 8.6a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8.6" />
+        </svg>
+      </button>
+    </div>
+
+    <div id="ctx" class="menu ctx" role="menu" hidden>
+      <div id="ctx-spell"></div>
+      <button data-ctx="cut" role="menuitem" data-edit>Cut<kbd>Ctrl+X</kbd></button>
+      <button data-ctx="copy" role="menuitem">Copy<kbd>Ctrl+C</kbd></button>
+      <button data-ctx="paste" role="menuitem" data-edit>Paste<kbd>Ctrl+V</kbd></button>
+      <hr />
+      <button data-ctx="selectAll" role="menuitem">Select All<kbd>Ctrl+A</kbd></button>
+      <button data-ctx="read" role="menuitem">Read Aloud From Here</button>
+      <hr data-edit />
+      <button data-ctx="link" role="menuitem" data-edit>Add Link…<kbd>Ctrl+Shift+K</kbd></button>
+      <button data-ctx="unlink" role="menuitem">Remove Link</button>
+      <div id="ctx-table">
+        <hr />
+        <button data-table="rowAbove" role="menuitem">Insert Row Above</button>
+        <button data-table="rowBelow" role="menuitem">Insert Row Below</button>
+        <button data-table="colLeft" role="menuitem">Insert Column Left</button>
+        <button data-table="colRight" role="menuitem">Insert Column Right</button>
+        <hr />
+        <button data-table="deleteRow" role="menuitem">Delete Row</button>
+        <button data-table="deleteCol" role="menuitem">Delete Column</button>
+        <button data-table="deleteTable" role="menuitem" class="danger">Delete Table</button>
+      </div>
+      <hr data-edit />
+      <button data-ctx="bold" role="menuitem" data-edit>Bold<kbd>Ctrl+B</kbd></button>
+      <button data-ctx="italic" role="menuitem" data-edit>Italic<kbd>Ctrl+I</kbd></button>
+      <button data-ctx="underline" role="menuitem" data-edit>Underline<kbd>Ctrl+U</kbd></button>
+    </div>
+
+    <template id="start">
+      <div id="empty">
+        <div class="start-head">
+          <h1>Ribbonless</h1>
+          <p>Word files, without the ribbon. Press <kbd>Ctrl</kbd> <kbd>K</kbd> anytime for every command.</p>
+          <p class="error"></p>
+        </div>
+        <div class="recent-wrap">
+          <div class="recent">
+            <button class="card new-card new-btn">
+              <div class="mini-page new-page">
+                <svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12" /></svg>
+              </div>
+              <span class="card-name">New Document</span>
+              <span class="card-meta">Ctrl+N</span>
+            </button>
+            <button class="card new-card open-btn">
+              <div class="mini-page new-page">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v8.3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z" />
+                </svg>
+              </div>
+              <span class="card-name">Open…</span>
+              <span class="card-meta">Ctrl+O</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
