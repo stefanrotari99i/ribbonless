@@ -4,18 +4,38 @@
 
 <h1 align="center">Ribbonless</h1>
 
-<p align="center"><b>Word files, without the ribbon.</b><br>
-A calm, fast editor for <code>.docx</code> documents on Windows. Free and open source.</p>
+<p align="center"><b>Word files, without the ribbon. Or the subscription.</b><br>
+A calm, fast editor for <code>.docx</code> documents on Windows. Free and open source, forever.</p>
+
+<p align="center">
+  <a href="https://github.com/stefanrotari99i/ribbonless/releases/latest"><b>⬇ Download for Windows</b></a>
+  &nbsp;·&nbsp; 2.2 MB &nbsp;·&nbsp; no account, no ads, no tracking
+</p>
 
 <p align="center">
   <img src="docs/screens/hero.png" width="860" alt="Ribbonless with a document and its outline">
 </p>
 
-Most documents don't need forty toolbar buttons. Ribbonless opens a Word file in about half a second, lets you
-read and edit it in a quiet window, and saves it back as a real `.docx` that Word, Google Docs and LibreOffice open
-without complaint. The installer is 2.5 MB.
+## Why this exists
 
-It is not a full replacement for Word. It is the thing you open when you just want to read, fix or write a document.
+Someone sends you a `.docx`. You want to read it, fix a typo, add a paragraph and send it back.
+For that, the usual answer is a monthly subscription and an app that takes longer to start than the edit takes to make.
+
+Opening and editing a document is a basic need, like opening a photo or a PDF. It shouldn't cost money every month,
+and it shouldn't come with forty toolbar buttons, a sign-in screen and an upsell.
+
+**Ribbonless is the free, open-source answer for everyday Word documents:**
+
+- **Free.** No trial, no premium tier, no "unlock this feature". MIT licensed, so it stays free.
+- **Real Word files.** It saves proper `.docx` that Word, Google Docs and LibreOffice open without complaint, and it only
+  rewrites the paragraphs you changed, so the rest of the file stays exactly as it was.
+- **Fast and small.** A 2.2 MB installer; documents open in about half a second.
+- **Quiet.** One clean window. Everything else is one shortcut away (`Ctrl+K`).
+- **Private.** Your documents never leave your computer.
+
+It doesn't try to be all of Word. It covers what most people actually do with documents: reading, writing, formatting,
+tables, images, links, find and replace, spelling, and getting an older version back. The rest is on the
+[roadmap](#help-make-it-better), and anyone can help build it.
 
 ## A quick tour
 
@@ -172,7 +192,7 @@ Found a security problem? Please see [SECURITY.md](SECURITY.md).
 
 ## Limitations
 
-Ribbonless is honest about what it can't do yet:
+Ribbonless is honest about what it can't do yet (each of these is a good first contribution):
 
 - Tracked changes and comments are not shown. They stay in the file for paragraphs you don't edit; editing a paragraph
   that contains tracked changes accepts them for that paragraph.
@@ -215,9 +235,23 @@ only those, so anything Ribbonless doesn't understand passes through untouched.
 | `src-tauri/src/main.rs` | File access, backups, version storage, fonts and spellchecker      |
 | `tests/`                | End-to-end tests                                                   |
 
-## Contributing
+## Help make it better
 
-Bug reports and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+Ribbonless gets better every time someone uses it on a real document and tells us what broke. You don't need to be a
+programmer to help:
+
+- **Found a document that looks wrong or a feature you miss?** [Open an issue](https://github.com/stefanrotari99i/ribbonless/issues/new).
+  A screenshot (and the file, if it isn't private) helps a lot.
+- **Like it?** Star the repository and tell a friend who is still paying for a subscription just to open attachments.
+- **Write code?** Pull requests are very welcome. Good places to start:
+  - showing tracked changes and comments
+  - editing headers and footers
+  - adding rows and columns in tables with merged cells
+  - macOS and Linux builds (the code is cross-platform already; it mostly needs testing)
+  - translations of the interface
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run it locally and what a good pull request looks like.
+Every fix, however small, makes free document editing a little better for everyone.
 
 ## License
 

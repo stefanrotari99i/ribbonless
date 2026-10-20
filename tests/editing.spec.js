@@ -157,7 +157,7 @@ test("find and replace changes every match in one undo step", async ({ page }) =
   await page.locator("#find-done").click();
   await caretIn(page, "Summary");
   await page.keyboard.press("Control+Z");
-  expect(await count()).toBe(before);
+  await expect.poll(count).toBe(before); // the undo can land a frame after the key event
 });
 
 test("links are saved as Word hyperlinks with their address", async ({ page }) => {
