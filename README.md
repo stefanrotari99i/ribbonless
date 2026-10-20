@@ -4,7 +4,7 @@
 
 <h1 align="center">Ribbonless</h1>
 
-<p align="center"><b>Word files, without the ribbon. Or the subscription.</b><br>
+<p align="center"><b>Word files, without the ribbon.</b><br>
 A small, free editor for <code>.docx</code> documents on Windows.</p>
 
 <p align="center">
@@ -15,31 +15,29 @@ A small, free editor for <code>.docx</code> documents on Windows.</p>
   <img src="docs/screens/hero.png" width="860" alt="Ribbonless with a document and its outline">
 </p>
 
-## Why I made this
+## Why
 
-Ok so. Someone emails me a `.docx`. I need to fix one typo and send it back. That's it. That's the whole job.
+I got tired of paying for Office just to open the .docx files people send me.
 
-And somehow that turned into: open Word, wait, get told my subscription expired, get offered Copilot, close three
-popups, finally find the text under a ribbon with 47 buttons I've never clicked in my life, fix the typo, and watch
-Word quietly move my image to page 4 as a thank you.
+Most of the time I just need to read something, change a few lines and send it back. For that Word wants a
+subscription, a Microsoft account and a few seconds to even start, and it still moves my pictures around when I press
+enter. WordPad used to be the free option for this and they removed that too.
 
-I'm sorry but paying every month just to _open a file_ is insane. Nobody pays a subscription to look at a JPEG.
+LibreOffice is great, but it's a whole office suite and way more than I need for this. I wanted something small that
+opens fast and stays out of the way.
 
-So I built the thing I actually wanted. You open a Word file, it shows up in about half a second, you edit it, it
-saves. The file comes out as a normal `.docx` that Word, Google Docs and LibreOffice open fine, and it only rewrites
-the paragraphs you touched, so it won't wreck the rest of your document. No account. No ads. No "sign in to continue".
-Nothing gets uploaded anywhere. The installer is 2.2 MB, which is less than the Word splash screen probably weighs.
+So this is that. It opens a .docx, you edit it, it saves a normal .docx back that Word, Google Docs and LibreOffice
+open fine. It only rewrites the paragraphs you actually changed, so it doesn't mess up the rest of the file. No
+account, nothing gets uploaded, no telemetry. The installer is about 2 MB.
 
-It does the stuff normal people actually do: writing, headings, bold and friends, lists, tables, images, links, find
-and replace, spell check, and going back to an older version when you mess up. It does _not_ do mail merge, SmartArt or
-whatever "Text Effects and Typography" is. If you need those, Word is right there, enjoy.
+It's not trying to replace Word for everything. If you need mail merge or track changes, use Word or LibreOffice. If
+you just need to edit a document, this should be enough.
 
-Free, open source, MIT. It stays that way.
+It's free and MIT licensed, and it's going to stay that way.
 
 ## A quick tour
 
-The document in these screenshots is a made-up Reddit thread (`scripts/make-sample.mjs`). If it feels personal,
-that's between you and your ribbon.
+The document in the screenshots is a fake Reddit thread I made for testing (`scripts/make-sample.mjs`).
 
 ### Start screen
 
@@ -189,7 +187,7 @@ Found a security problem? Please see [SECURITY.md](SECURITY.md).
 
 ## Limitations
 
-Stuff it can't do yet (PRs welcome, seriously):
+Things that don't work yet:
 
 - Tracked changes and comments are not shown. They stay in the file for paragraphs you don't edit; editing a paragraph
   that contains tracked changes accepts them for that paragraph.
@@ -234,17 +232,16 @@ only those, so anything Ribbonless doesn't understand passes through untouched.
 
 ## Contributing
 
-This is a one-person side project, so honestly any help makes a real difference.
+It's just me working on this right now, so any help is really appreciated.
 
-You don't need to code. The single most useful thing you can do: open a weird document from your work or school, and
-if Ribbonless gets it wrong, [tell me](https://github.com/stefanrotari99i/ribbonless/issues/new). Screenshot plus the
-file (if it's not private) and I'll fix it.
+You don't have to code to help. If you open a .docx and it looks wrong in Ribbonless,
+[open an issue](https://github.com/stefanrotari99i/ribbonless/issues/new) with a screenshot (and the file, if it's not
+private). Honestly that's the most useful thing, because every Word file is weird in its own way.
 
-If you do code, grab anything from the list above. Tracked changes, headers and footers, a Mac build, translations,
-all fair game. [CONTRIBUTING.md](CONTRIBUTING.md) has the setup, it takes about five minutes.
+If you want to code, anything from the list above is fair game. Track changes and headers/footers are the big ones,
+and a Mac or Linux build would be nice too. Setup is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-And if you know someone still paying for Office just to open attachments from their landlord, send them this. Free
-them.
+And if you know someone paying for 365 just to open attachments, send them this.
 
 ## License
 
