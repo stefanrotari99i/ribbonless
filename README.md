@@ -4,245 +4,133 @@
 
 <h1 align="center">Ribbonless</h1>
 
-<p align="center"><b>Word files, without the ribbon.</b><br>
-A small, free editor for <code>.docx</code> documents on Windows.</p>
-
 <p align="center">
-  <a href="https://github.com/stefanrotari99i/ribbonless/releases/latest"><b>Download for Windows</b></a> (2.2 MB)
+  A small, fast editor for Word documents on Windows. Free and open source.
 </p>
 
 <p align="center">
-  <img src="docs/screens/hero.png" width="860" alt="Ribbonless with a document and its outline">
+  <a href="https://github.com/stefanrotari99i/ribbonless/releases/latest"><img src="https://img.shields.io/github/v/release/stefanrotari99i/ribbonless?style=flat-square&label=download" alt="Latest release"></a>
+  <a href="https://github.com/stefanrotari99i/ribbonless/releases"><img src="https://img.shields.io/github/downloads/stefanrotari99i/ribbonless/total?style=flat-square" alt="Downloads"></a>
+  <img src="https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078d4?style=flat-square" alt="Platform">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/stefanrotari99i/ribbonless?style=flat-square" alt="License"></a>
+  <a href="https://github.com/stefanrotari99i/ribbonless/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/stefanrotari99i/ribbonless/ci.yml?branch=main&style=flat-square" alt="CI"></a>
 </p>
 
-## Why
+![Ribbonless](docs/screens/hero.png)
 
-I got tired of paying for Office just to open the .docx files people send me.
+## What is Ribbonless?
 
-Most of the time I just need to read something, change a few lines and send it back. For that Word wants a
-subscription, a Microsoft account and a few seconds to even start, and it still moves my pictures around when I press
-enter. WordPad used to be the free option for this and they removed that too.
+I got tired of paying for Office just to open the .docx files people send me. Most of the time I only need to read
+something, change a few lines and send it back, and for that Word wants a subscription, a Microsoft account and a few
+seconds to start. WordPad used to be the free option for this, and it's gone now.
 
-LibreOffice is great, but it's a whole office suite and way more than I need for this. I wanted something small that
-opens fast and stays out of the way.
+Don't get me wrong, LibreOffice is great and I still use it. But it's a whole office suite, and I wanted something small
+that opens fast and stays out of the way. So I made one.
 
-So this is that. It opens a .docx, you edit it, it saves a normal .docx back that Word, Google Docs and LibreOffice
-open fine. It only rewrites the paragraphs you actually changed, so it doesn't mess up the rest of the file. No
-account, nothing gets uploaded, no telemetry. The installer is about 2 MB.
+Ribbonless opens a .docx, lets you edit it, and saves a normal .docx back that Word, Google Docs and LibreOffice open
+fine. It only rewrites the paragraphs you changed, so the rest of the file stays as it was. No account, no telemetry,
+nothing gets uploaded. It's not a full Word replacement, just the part most people actually use.
 
-It's not trying to replace Word for everything. If you need mail merge or track changes, use Word or LibreOffice. If
-you just need to edit a document, this should be enough.
+## Features
 
-It's free and MIT licensed, and it's going to stay that way.
+- Opens a typical document in about half a second, installer is about 2 MB
+- Styles, bold/italic/underline, fonts, sizes, colors, highlight, alignment, line spacing
+- Bulleted and numbered lists with levels, tables, images (paste, drag in, resize), links
+- Markdown shortcuts while typing (`# `, `- `, `1. `, `**bold**`) and a `/` menu on empty lines
+- Command bar (`Ctrl+K`) for everything, so the window stays clean
+- Find and replace, spell check with the Windows spellchecker
+- Version history: see how the document looked earlier and restore it
+- Auto-save, plus a backup for documents you haven't saved yet
+- Marks in the margin for every paragraph you changed since opening the file
+- Tabs, outline sidebar, focus mode, read aloud, light and dark mode
+- Export to PDF, Markdown or HTML
 
-## A quick tour
+## Screenshots
 
-The document in the screenshots is a fake Reddit thread I made for testing (`scripts/make-sample.mjs`).
+The document in the screenshots is a fake Reddit thread I made for testing.
 
-### Start screen
+|                                                                                      |                                                                        |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| ![Start screen](docs/screens/start.png) Start screen with templates and recent files | ![Format panel](docs/screens/format-panel.png) Format panel, dark mode |
+| ![Version history](docs/screens/version-history.png) Version history                 | ![Command bar](docs/screens/command-bar.png) Command bar (`Ctrl+K`)    |
 
-Templates for a letter, report, meeting notes and design doc, plus the documents you opened recently.
-`Ctrl+N` starts a blank one, `Ctrl+O` opens a file, and you can also drop a `.docx` onto the window.
-The house button in the corner (or `Alt+Home`) brings you back here at any time; your open documents stay in their
-tabs, one click away.
+<details>
+<summary>More screenshots</summary>
 
-<img src="docs/screens/start.png" width="760" alt="Start screen with templates and recent documents">
+|                                                                              |                                                                   |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| ![Selection bar](docs/screens/selection-bar.png) Selection bar               | ![Slash menu](docs/screens/slash-menu.png) `/` menu               |
+| ![Find and replace](docs/screens/find-replace.png) Find and replace          | ![Tables](docs/screens/table-menu.png) Table tools on right-click |
+| ![Links](docs/screens/link.png) Adding a link                                | ![Spelling](docs/screens/spelling.png) Spelling suggestions       |
+| ![Changes](docs/screens/changes.png) Changed paragraphs marked in the margin | ![Images](docs/screens/image.png) Resizing an image               |
+| ![Focus mode](docs/screens/focus-mode.png) Focus mode                        | ![Tabs](docs/screens/tabs.png) Tabs                               |
 
-### Formatting, all in one panel
+</details>
 
-The **Aa** button opens styles (title, headings, body), bold, italic, underline, font size and font, line spacing,
-space after paragraphs, text color (including any custom color), highlight, alignment and lists.
-Shown here in the dark appearance; the page itself stays white, like paper.
+## Download
 
-<img src="docs/screens/format-panel.png" width="760" alt="Format panel in dark mode">
+Get the installer from [Releases](https://github.com/stefanrotari99i/ribbonless/releases/latest). Works on Windows 10
+and 11 (the frosted window background needs 11).
 
-### Selection bar
+The installer isn't code-signed yet, so Windows SmartScreen will probably warn you the first time. Click
+**More info → Run anyway**, or build it yourself from source.
 
-Select some text and the common actions float above it: bold, italic, underline, link, highlight, headings and lists.
+## Shortcuts
 
-<img src="docs/screens/selection-bar.png" width="760" alt="Floating bar above selected text">
-
-### Command bar
-
-`Ctrl+K` finds any command by typing a few letters: insert, export, templates, line spacing, version history,
-jump to a heading. You never have to remember where something lives.
-
-<img src="docs/screens/command-bar.png" width="760" alt="Command bar filtered by 'ins'">
-
-### Slash menu and Markdown shortcuts
-
-Type `/` on an empty line to turn it into a heading, list, table or image. Markdown works while you type too:
-`# ` for a heading, `- ` for a bullet, `1. ` for a numbered list, `**bold**` and `*italic*`.
-Everything is saved as real Word styles, not as Markdown.
-
-<img src="docs/screens/slash-menu.png" width="760" alt="Slash menu on an empty line">
-
-### Find and replace
-
-`Ctrl+F` to find, `Ctrl+H` to replace. Matches are highlighted as you type; **All** replaces every match in one
-step, and one `Ctrl+Z` undoes it.
-
-<img src="docs/screens/find-replace.png" width="760" alt="Find and replace bar with matches highlighted">
-
-### Tables
-
-Insert a table from the `/` menu. Tab moves to the next cell and adds a row at the end; right-click a cell to insert
-or delete rows and columns, or the whole table.
-
-<img src="docs/screens/table-menu.png" width="760" alt="Right-click menu with table tools">
-
-### Links
-
-Select text and press `Ctrl+Shift+K`. Links are saved as normal Word hyperlinks. `Ctrl+click` opens them in your browser.
-
-<img src="docs/screens/link.png" width="760" alt="Link box below the selected text">
-
-### Spelling
-
-Misspelled words are underlined using the Windows spellchecker, in whatever languages you have installed.
-Right-click for suggestions or to add the word to your dictionary.
-
-<img src="docs/screens/spelling.png" width="760" alt="Spelling suggestions in the right-click menu">
-
-### Changes since you opened the file
-
-A thin mark in the margin shows every paragraph you changed in this session, so you can see at a glance what you touched.
-
-<img src="docs/screens/changes.png" width="760" alt="Orange margin marks next to edited paragraphs">
-
-### Version history
-
-Ribbonless keeps earlier versions of each document on your computer. Open **⋯ → Version history**, click a version to
-see it exactly as it was, and restore it if you want it back. Nothing is lost when you restore: the text being replaced
-is kept as a version too.
-
-<img src="docs/screens/version-history.png" width="760" alt="Version history panel with an older version previewed">
-
-### Images
-
-Insert, paste or drag in images. Click one to resize it from the corners, align it, or delete it.
-Images are stored inside the `.docx`, like Word does.
-
-<img src="docs/screens/image.png" width="760" alt="Selected image with resize handles">
-
-### Focus mode
-
-`Ctrl+Shift+F` hides everything except the page and dims all paragraphs but the one you're writing.
-
-<img src="docs/screens/focus-mode.png" width="760" alt="Focus mode with only the current paragraph in full color">
-
-### Tabs
-
-`Ctrl+T` opens a new tab; each tab keeps its own document, undo history and scroll position. Ribbonless reopens
-your tabs next time.
-
-<img src="docs/screens/tabs.png" width="760" alt="Two documents open in tabs">
-
-### Also
-
-- Outline sidebar (`Ctrl+Shift+O`) built from the headings, shown in the first screenshot
-- Read aloud from any paragraph, with the spoken word highlighted
-- Export to PDF (`Ctrl+P`), Markdown or a self-contained HTML page
-- A word count goal, light and dark appearance, and the frosted Windows 11 window background
-
-### Not losing work
-
-- Auto-save to the file, plus a backup for documents that were never saved
-- Saving writes a temporary file first and then swaps it in, so a crash mid-save never leaves a broken document
-
-## Install
-
-Download the latest installer from [Releases](https://github.com/stefanrotari99i/ribbonless/releases) and run it.
-Windows 10 and 11 are supported; the frosted window background needs Windows 11.
-
-The installer is not code-signed yet, so Windows SmartScreen may warn the first time. Choose **More info → Run anyway**,
-or build it yourself from source (below) if you prefer.
-
-## Privacy and security
-
-- Nothing leaves your computer. There are no accounts, no telemetry and no network requests; documents are never uploaded.
-- Documents are displayed under a strict content security policy: they cannot run scripts or load anything from the internet.
-- Links only open when you Ctrl+click them, and only `http`, `https` and `mailto` links.
-- The app can only read documents and images and only write `.docx`, `.md` and `.html` files.
-
-Found a security problem? Please see [SECURITY.md](SECURITY.md).
-
-## Keyboard shortcuts
-
-|                                    |                                        |
-| ---------------------------------- | -------------------------------------- |
-| Command bar                        | `Ctrl+K`                               |
-| Home (start screen)                | `Alt+Home`                             |
-| New document / tab                 | `Ctrl+N` / `Ctrl+T`                    |
-| Open / save / save as              | `Ctrl+O` / `Ctrl+S` / `Ctrl+Shift+S`   |
-| Close tab, switch tabs             | `Ctrl+W`, `Ctrl+Tab`, `Ctrl+1`…`9`     |
-| Find / find and replace            | `Ctrl+F` / `Ctrl+H`                    |
-| Headings, body text                | `Ctrl+Alt+1`…`3`, `Ctrl+Shift+N`       |
-| Bulleted list                      | `Ctrl+Shift+L`                         |
-| Align left, center, right, justify | `Ctrl+L`, `Ctrl+E`, `Ctrl+R`, `Ctrl+J` |
-| Smaller / bigger text              | `Ctrl+[` / `Ctrl+]`                    |
-| Link                               | `Ctrl+Shift+K`, `Ctrl+click` to open   |
-| Outline / focus mode               | `Ctrl+Shift+O` / `Ctrl+Shift+F`        |
-| Print or export PDF                | `Ctrl+P`                               |
+- `Ctrl+K` command bar, `Alt+Home` start screen
+- `Ctrl+N` new document, `Ctrl+T` new tab, `Ctrl+W` close tab, `Ctrl+Tab` / `Ctrl+1`…`9` switch tabs
+- `Ctrl+O` open, `Ctrl+S` save, `Ctrl+Shift+S` save as, `Ctrl+P` print or PDF
+- `Ctrl+F` find, `Ctrl+H` replace
+- `Ctrl+Alt+1`…`3` headings, `Ctrl+Shift+N` body text, `Ctrl+Shift+L` bullet list
+- `Ctrl+L` / `E` / `R` / `J` align, `Ctrl+[` / `]` text size
+- `Ctrl+Shift+K` add link, `Ctrl+click` open link
+- `Ctrl+Shift+O` outline, `Ctrl+Shift+F` focus mode
 
 ## Limitations
 
-Things that don't work yet:
-
-- Tracked changes and comments are not shown. They stay in the file for paragraphs you don't edit; editing a paragraph
-  that contains tracked changes accepts them for that paragraph.
+- Tracked changes and comments aren't shown yet. They're kept in the file, but editing a paragraph that has tracked
+  changes accepts them for that paragraph.
 - Headers and footers are shown but can't be edited.
-- Tables with merged cells can be edited, but rows and columns can't be added or removed in them.
+- Tables with merged cells can be edited, but you can't add or remove rows and columns in them.
 - Complex layouts (text boxes, columns, floating shapes) open read-only.
-- Windows only for now. The code is cross-platform ([Tauri](https://tauri.app)), so macOS and Linux builds are mostly a matter of testing.
+- Windows only for now. It's built with [Tauri](https://tauri.app), so Mac and Linux builds should mostly need testing.
+
+## Privacy
+
+Ribbonless makes no network requests. No accounts, no analytics, documents never leave your computer. Documents can't
+run scripts or load anything from the internet, and links only open on `Ctrl+click`. More in [SECURITY.md](SECURITY.md).
 
 ## Building from source
 
-You need [Node.js](https://nodejs.org) 20 or newer and [Rust](https://rustup.rs) with the MSVC build tools
-(see Tauri's [prerequisites](https://tauri.app/start/prerequisites/)).
+You need [Node.js](https://nodejs.org) 20+ and [Rust](https://rustup.rs) with the MSVC build tools (see Tauri's
+[prerequisites](https://tauri.app/start/prerequisites/)).
 
 ```bash
 npm install
 npm run tauri dev      # run with live reload
-npm run tauri build    # build the installer into src-tauri/target/release/bundle/nsis
+npm run tauri build    # installer ends up in src-tauri/target/release/bundle/nsis
 ```
 
-Tests:
+Tests and lint:
 
 ```bash
 npx playwright install chromium   # once
-npm test                          # end-to-end tests in a browser
-cargo test --manifest-path src-tauri/Cargo.toml   # Windows integration (fonts, spellchecker, file rules)
+npm test
+cargo test --manifest-path src-tauri/Cargo.toml
 npm run lint
 ```
 
-## How it works
-
-The window is a [Tauri](https://tauri.app) app: a small Rust program that hosts the system web view (WebView2 on Windows).
-Documents are rendered with [docx-preview](https://github.com/VolodymyrBaydalka/docxjs). Editing happens on the rendered
-page; when you save, `editor.js` maps each changed paragraph back to its `w:p` in the original `document.xml` and rewrites
-only those, so anything Ribbonless doesn't understand passes through untouched.
-
-| File                    | What's in it                                                       |
-| ----------------------- | ------------------------------------------------------------------ |
-| `main.js`               | The app: tabs, opening and saving, menus, outline, version history |
-| `editor.js`             | Editing and the round trip back to Word XML                        |
-| `src-tauri/src/main.rs` | File access, backups, version storage, fonts and spellchecker      |
-| `tests/`                | End-to-end tests                                                   |
+Documents are rendered with [docx-preview](https://github.com/VolodymyrBaydalka/docxjs). When you save, `editor.js`
+maps each changed paragraph back to its place in the original `document.xml` and rewrites only those, so anything
+Ribbonless doesn't understand is left alone.
 
 ## Contributing
 
-It's just me working on this right now, so any help is really appreciated.
-
-You don't have to code to help. If you open a .docx and it looks wrong in Ribbonless,
-[open an issue](https://github.com/stefanrotari99i/ribbonless/issues/new) with a screenshot (and the file, if it's not
-private). Honestly that's the most useful thing, because every Word file is weird in its own way.
-
-If you want to code, anything from the list above is fair game. Track changes and headers/footers are the big ones,
-and a Mac or Linux build would be nice too. Setup is in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-And if you know someone paying for 365 just to open attachments, send them this.
+It's just me working on this right now, so help is really appreciated. The easiest way: if a .docx looks wrong in
+Ribbonless, [open an issue](https://github.com/stefanrotari99i/ribbonless/issues/new) with a screenshot (and the file,
+if it's not private). If you want to code, anything under Limitations is fair game. See
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE) © Stefan Rotari. "Word" is a trademark of Microsoft Corporation; Ribbonless is not affiliated with Microsoft.
+[MIT](LICENSE). "Word" is a trademark of Microsoft; Ribbonless is not affiliated with Microsoft.
