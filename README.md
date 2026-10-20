@@ -17,24 +17,29 @@ A small, free editor for <code>.docx</code> documents on Windows.</p>
 
 ## Why I made this
 
-Someone sends you a `.docx`. You want to read it, fix a typo, add a paragraph and send it back. Today that usually
-means paying for an Office subscription, or fighting with a web editor that wants you to sign in first.
+Ok so. Someone emails me a `.docx`. I need to fix one typo and send it back. That's it. That's the whole job.
 
-I think opening and editing a document should be as free as opening a photo. So Ribbonless does the everyday part of
-Word (reading, writing, formatting, tables, images, links, find and replace, spelling, going back to an older version)
-and leaves out everything else. No account, no ads, no telemetry, and your files never leave your computer.
+And somehow that turned into: open Word, wait, get told my subscription expired, get offered Copilot, close three
+popups, finally find the text under a ribbon with 47 buttons I've never clicked in my life, fix the typo, and watch
+Word quietly move my image to page 4 as a thank you.
 
-It saves real `.docx` files that Word, Google Docs and LibreOffice open fine. When you edit, only the paragraphs you
-changed are rewritten; the rest of the file is kept byte for byte. The installer is 2.2 MB and a typical document opens
-in about half a second.
+I'm sorry but paying every month just to _open a file_ is insane. Nobody pays a subscription to look at a JPEG.
 
-It's not a full Word replacement and doesn't try to be. If something you need is missing,
-[open an issue](https://github.com/stefanrotari99i/ribbonless/issues) or [help build it](#contributing).
+So I built the thing I actually wanted. You open a Word file, it shows up in about half a second, you edit it, it
+saves. The file comes out as a normal `.docx` that Word, Google Docs and LibreOffice open fine, and it only rewrites
+the paragraphs you touched, so it won't wreck the rest of your document. No account. No ads. No "sign in to continue".
+Nothing gets uploaded anywhere. The installer is 2.2 MB, which is less than the Word splash screen probably weighs.
+
+It does the stuff normal people actually do: writing, headings, bold and friends, lists, tables, images, links, find
+and replace, spell check, and going back to an older version when you mess up. It does _not_ do mail merge, SmartArt or
+whatever "Text Effects and Typography" is. If you need those, Word is right there, enjoy.
+
+Free, open source, MIT. It stays that way.
 
 ## A quick tour
 
-The sample document in these screenshots is made up (`scripts/make-sample.mjs`). Any resemblance to your own
-experience with the ribbon is coincidental.
+The document in these screenshots is a made-up Reddit thread (`scripts/make-sample.mjs`). If it feels personal,
+that's between you and your ribbon.
 
 ### Start screen
 
@@ -184,7 +189,7 @@ Found a security problem? Please see [SECURITY.md](SECURITY.md).
 
 ## Limitations
 
-What it can't do yet:
+Stuff it can't do yet (PRs welcome, seriously):
 
 - Tracked changes and comments are not shown. They stay in the file for paragraphs you don't edit; editing a paragraph
   that contains tracked changes accepts them for that paragraph.
@@ -229,14 +234,17 @@ only those, so anything Ribbonless doesn't understand passes through untouched.
 
 ## Contributing
 
-Help is very welcome, and you don't have to write code to give it. The most useful thing is a real document that
-Ribbonless gets wrong: [open an issue](https://github.com/stefanrotari99i/ribbonless/issues/new) with a screenshot,
-and the file if it isn't private.
+This is a one-person side project, so honestly any help makes a real difference.
 
-If you do write code, the limitations above are the obvious places to start, along with macOS and Linux builds and
-translating the interface. [CONTRIBUTING.md](CONTRIBUTING.md) explains how to run it and test your change.
+You don't need to code. The single most useful thing you can do: open a weird document from your work or school, and
+if Ribbonless gets it wrong, [tell me](https://github.com/stefanrotari99i/ribbonless/issues/new). Screenshot plus the
+file (if it's not private) and I'll fix it.
 
-And if you know someone who pays for Office only to open attachments, send them the link.
+If you do code, grab anything from the list above. Tracked changes, headers and footers, a Mac build, translations,
+all fair game. [CONTRIBUTING.md](CONTRIBUTING.md) has the setup, it takes about five minutes.
+
+And if you know someone still paying for Office just to open attachments from their landlord, send them this. Free
+them.
 
 ## License
 
