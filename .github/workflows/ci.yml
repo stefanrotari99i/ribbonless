@@ -37,6 +37,7 @@ jobs:
           workspaces: src-tauri
       - run: npm ci
       - run: npm run build # the Rust build embeds dist/
+      - run: cargo fmt --manifest-path src-tauri/Cargo.toml --check
       - run: cargo test --manifest-path src-tauri/Cargo.toml
       - run: npm run tauri build
       - uses: actions/upload-artifact@v7

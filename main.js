@@ -1500,8 +1500,7 @@ document.addEventListener("contextmenu", async (e) => {
   const menu = $("ctx");
   $("selbar").hidden = true;
   imageTools.deselect();
-  // Right-clicking outside the selection moves the caret there, as in native editors,
-  // so table tools and "Read aloud from here" act where the user clicked
+  // Right-clicking outside the selection moves the caret there first, like native editors
   const at = document.caretRangeFromPoint(e.clientX, e.clientY);
   const sel = getSelection();
   const insideSelection = sel.rangeCount && !sel.isCollapsed && at && sel.getRangeAt(0).isPointInRange(at.startContainer, at.startOffset);

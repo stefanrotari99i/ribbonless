@@ -21,4 +21,4 @@ You can expect a first reply within a week. Fixes go out in a new release, and y
 - No network access: the content security policy blocks remote loads, and the app makes no requests of its own.
 - Documents can't run code; scripts are limited to the app's own files.
 - The page can only read documents and images and only write `.docx`, `.md` and `.html`.
-- Links open in the default browser only on Ctrl+click and only for `http`, `https`, `mailto` and `tel`.
+- Links open in the default browser only on Ctrl+click and only for `http`, `https` and `mailto`.

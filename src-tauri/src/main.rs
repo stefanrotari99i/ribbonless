@@ -5,8 +5,15 @@ use tauri::ipc::{InvokeBody, Request, Response};
 use tauri::{AppHandle, Manager};
 
 fn header(req: &Request<'_>, key: &str) -> Result<String, String> {
-    let value = req.headers().get(key).and_then(|v| v.to_str().ok()).ok_or(format!("missing {key}"))?;
-    percent_encoding::percent_decode_str(value).decode_utf8().map(|s| s.into_owned()).map_err(|e| e.to_string())
+    let value = req
+        .headers()
+        .get(key)
+        .and_then(|v| v.to_str().ok())
+        .ok_or(format!("missing {key}"))?;
+    percent_encoding::percent_decode_str(value)
+        .decode_utf8()
+        .map(|s| s.into_owned())
+        .map_err(|e| e.to_string())
 }
 
 fn body<'a>(req: &'a Request<'a>) -> Result<&'a [u8], String> {
@@ -45,13 +52,18 @@ fn backup_dir(app: &AppHandle) -> Result<PathBuf, String> {
 #[cfg(windows)]
 mod spell {
     use windows::core::{HSTRING, PWSTR};
-    use windows::Win32::Globalization::{GetUserDefaultLocaleName, ISpellChecker, ISpellCheckerFactory, SpellCheckerFactory};
-    use windows::Win32::System::Com::{CoCreateInstance, CoInitializeEx, CoTaskMemFree, CLSCTX_INPROC_SERVER, COINIT_MULTITHREADED};
+    use windows::Win32::Globalization::{
+        GetUserDefaultLocaleName, ISpellChecker, ISpellCheckerFactory, SpellCheckerFactory,
+    };
+    use windows::Win32::System::Com::{
+        CoCreateInstance, CoInitializeEx, CoTaskMemFree, CLSCTX_INPROC_SERVER, COINIT_MULTITHREADED,
+    };
 
     fn checker() -> windows::core::Result<ISpellChecker> {
         unsafe {
             let _ = CoInitializeEx(None, COINIT_MULTITHREADED);
-            let factory: ISpellCheckerFactory = CoCreateInstance(&SpellCheckerFactory, None, CLSCTX_INPROC_SERVER)?;
+            let factory: ISpellCheckerFactory =
+                CoCreateInstance(&SpellCheckerFactory, None, CLSCTX_INPROC_SERVER)?;
             let mut buf = [0u16; 85];
             let len = GetUserDefaultLocaleName(&mut buf).max(1) as usize - 1;
             let mut lang = String::from_utf16_lossy(&buf[..len]);
@@ -95,7 +107,10 @@ mod spell {
     #[test]
     fn lists_installed_fonts() {
         let fonts = super::font_families().unwrap();
-        assert!(fonts.iter().any(|f| f == "Segoe UI"), "Segoe UI ships with every Windows");
+        assert!(
+            fonts.iter().any(|f| f == "Segoe UI"),
+            "Segoe UI ships with every Windows"
+        );
     }
 
     #[test]
@@ -109,7 +124,9 @@ mod spell {
 #[cfg(windows)]
 fn font_families() -> windows::core::Result<Vec<String>> {
     use windows::core::w;
-    use windows::Win32::Graphics::DirectWrite::{DWriteCreateFactory, IDWriteFactory, DWRITE_FACTORY_TYPE_SHARED};
+    use windows::Win32::Graphics::DirectWrite::{
+        DWriteCreateFactory, IDWriteFactory, DWRITE_FACTORY_TYPE_SHARED,
+    };
     unsafe {
         let factory: IDWriteFactory = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED)?;
         let mut collection = None;
@@ -162,8 +179,7 @@ fn opened_path() -> Option<String> {
     std::env::args().nth(1)
 }
 
-// The page may only read documents and images, and only write documents and exports,
-// so even a compromised page could not touch programs or system files
+// Even a compromised page can only touch documents, images and exports, never programs or system files
 const READABLE: &[&str] = &["docx", "png", "jpg", "jpeg", "gif", "webp", "bmp"];
 const WRITABLE: &[&str] = &["docx", "md", "html"];
 
@@ -183,7 +199,9 @@ fn check_type(path: &str, allowed: &[&str]) -> Result<(), String> {
 #[tauri::command]
 fn read_file(path: String) -> Result<Response, String> {
     check_type(&path, READABLE)?;
-    std::fs::read(&path).map(Response::new).map_err(|e| e.to_string())
+    std::fs::read(&path)
+        .map(Response::new)
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -209,7 +227,9 @@ fn backup_meta(app: AppHandle) -> Option<String> {
 
 #[tauri::command]
 fn backup_data(app: AppHandle) -> Result<Response, String> {
-    std::fs::read(backup_dir(&app)?.join("backup.docx")).map(Response::new).map_err(|e| e.to_string())
+    std::fs::read(backup_dir(&app)?.join("backup.docx"))
+        .map(Response::new)
+        .map_err(|e| e.to_string())
 }
 
 // Version history: one folder per document (keyed by a hash of its path), one file per snapshot
@@ -226,7 +246,11 @@ fn versions_dir(app: &AppHandle, key: &str) -> Result<PathBuf, String> {
 
 fn version_times(dir: &PathBuf) -> Vec<u64> {
     let mut times: Vec<u64> = std::fs::read_dir(dir)
-        .map(|it| it.flatten().filter_map(|e| e.file_name().to_str()?.strip_suffix(".docx")?.parse().ok()).collect())
+        .map(|it| {
+            it.flatten()
+                .filter_map(|e| e.file_name().to_str()?.strip_suffix(".docx")?.parse().ok())
+                .collect()
+        })
         .unwrap_or_default();
     times.sort_unstable();
     times
@@ -236,7 +260,10 @@ fn version_times(dir: &PathBuf) -> Vec<u64> {
 fn version_save(app: AppHandle, request: Request) -> Result<(), String> {
     let dir = versions_dir(&app, &header(&request, "key")?)?;
     let ts: u64 = header(&request, "ts")?.parse().map_err(|_| "bad ts")?;
-    write_atomic(&dir.join(format!("{ts}.docx")).to_string_lossy(), body(&request)?)?;
+    write_atomic(
+        &dir.join(format!("{ts}.docx")).to_string_lossy(),
+        body(&request)?,
+    )?;
     let times = version_times(&dir);
     for old in &times[..times.len().saturating_sub(MAX_VERSIONS)] {
         let _ = std::fs::remove_file(dir.join(format!("{old}.docx")));
@@ -251,7 +278,9 @@ fn version_list(app: AppHandle, key: String) -> Result<Vec<u64>, String> {
 
 #[tauri::command]
 fn version_read(app: AppHandle, key: String, ts: u64) -> Result<Response, String> {
-    std::fs::read(versions_dir(&app, &key)?.join(format!("{ts}.docx"))).map(Response::new).map_err(|e| e.to_string())
+    std::fs::read(versions_dir(&app, &key)?.join(format!("{ts}.docx")))
+        .map(Response::new)
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -284,7 +313,10 @@ fn has_mica() -> bool {
         return false;
     }
     let chars = (size as usize / 2).saturating_sub(1);
-    String::from_utf16_lossy(&buf[..chars]).trim().parse::<u32>().is_ok_and(|build| build >= 22000)
+    String::from_utf16_lossy(&buf[..chars])
+        .trim()
+        .parse::<u32>()
+        .is_ok_and(|build| build >= 22000)
 }
 
 #[cfg(not(windows))]
@@ -319,7 +351,11 @@ fn main() {
                 config.window_effects = None;
             }
             let win = tauri::WebviewWindowBuilder::from_config(app.handle(), &config)?
-                .initialization_script(if mica { "window.__RIBBONLESS_MICA__ = true;" } else { "" })
+                .initialization_script(if mica {
+                    "window.__RIBBONLESS_MICA__ = true;"
+                } else {
+                    ""
+                })
                 .build()?;
             // The page shows the window once styled; this is the fallback if it never does
             std::thread::spawn(move || {
