@@ -143,10 +143,10 @@ function updateUi() {
   check("outline", document.body.classList.contains("outline-open"));
   check("focus", document.body.classList.contains("focus-mode"));
   check("changes", setting("changes"));
-  check("smoothCaret", setting("smoothCaret"));
+  check("smoothCaret", setting("smoothCaret", false));
   check("reopen", setting("reopen"));
   check("read", reader.isReading());
-  document.body.classList.toggle("smooth-caret", setting("smoothCaret"));
+  document.body.classList.toggle("smooth-caret", setting("smoothCaret", false));
   if (!editor) closePopover();
   syncFormat();
   showChanges();
@@ -1302,7 +1302,7 @@ const commands = {
     updateUi();
   },
   smoothCaret: () => {
-    store.set("smoothCaret", !setting("smoothCaret"));
+    store.set("smoothCaret", !setting("smoothCaret", false));
     updateUi();
     caret.update();
   },
@@ -1443,7 +1443,7 @@ const slash = createSlashMenu({
   },
 });
 
-const caret = createCaret(() => setting("smoothCaret") && !!editor);
+const caret = createCaret(() => setting("smoothCaret", false) && !!editor);
 const imageTools = createImageTools({ view, getEditor: () => editor });
 
 function closeMenus() {

@@ -44,6 +44,7 @@ export function createCaret(isActive) {
   };
   for (const evt of ["selectionchange", "input", "keydown", "mouseup", "focusin", "focusout"]) document.addEventListener(evt, update, true);
   window.addEventListener("resize", update);
+  document.addEventListener("scroll", update, true); // the caret is fixed-position, so it has to follow the page
   window.addEventListener("blur", () => (el.hidden = true));
   window.addEventListener("focus", update);
   return { update };
